@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    
+    <title>Weather</title>
+</head>
+<body style="background-image:url(./para.jpg);background-size: cover;">
+    <h2 style="margin-top: 20px; padding-left:20px;color:midnightblue">WEATHER</h2>
+    <div class="container">
+        <!-- input -->
+        <div class="row mt-1">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4 p-1">
+                <form action="" class="border p-5">
+                    <input type="text" placeholder="Enter Location here" id="ser" class="form-control">
+                    <input class="btn btn-primary mt-5" onclick="search()"  type="button" name="" value="Search" >
+                    </form>
+            </div>
+        </div>
+        
+        <!-- output -->
+        <div class="row mt-3">
+            <div class="col-4" id="result1"></div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4" id="result">
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+  
+    function search()
+    {
+      loc=ser.value
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=76352d0eb16d4cdcbac4d5a7f6d989f3`)
+      .then(result=>result.json())
+            .then(data=>displayData(data))
+            .catch('Failed to fetch the data')
+    }
+    function displayData(weatherdetails){
+country=weatherdetails.sys.country
+humidity=weatherdetails.main.humidity
+wind=weatherdetails.wind.speed
+pressure=weatherdetails.main.pressure
+temperature=weatherdetails.main.temp
+feellike=weatherdetails.main.feels_like
+name=weatherdetails.name
+t=Math.floor(temperature-273.15)
+f=Math.floor(feellike-273.15)
+
+//console.log(country);
+
+htmldata=`
+<div class="card bg-info" style="width: 100%;">
+    <h4 style=text-align:center;>Weather Details</h4><br>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item bg-secondary">Country<br>${country}</li>
+    <li class="list-group-item  bg-secondary">Humidity<br>${humidity}</li>
+    <li class="list-group-item  bg-secondary">Wind<br>${wind}</li>
+    <li class="list-group-item  bg-secondary">Pressure<br>${pressure}</li>
+
+
+  </ul>
+</div>
+`
+result.innerHTML=htmldata
+htmldata1=`
+<div style=color:brown;>
+    <p><h2>${t}°C</h2</p>
+    <p><h6>Feels Like&nbsp${f}°C</h6></p>
+    <p><h3>${name}</h3></p>
+
+    </div>
+`
+result1.innerHTML=htmldata1
+    }
+    </script>
+</html>
